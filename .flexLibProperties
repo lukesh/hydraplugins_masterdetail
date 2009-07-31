@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flexLibProperties version="1">
+<includeClasses>
+<classEntry path="com.hydraframework.plugins.masterDetail.MasterDetailPlugin"/>
+<classEntry path="com.hydraframework.plugins.masterDetail.controller.CreateCommand"/>
+<classEntry path="com.hydraframework.plugins.masterDetail.controller.DeleteCommand"/>
+<classEntry path="com.hydraframework.plugins.masterDetail.controller.InstantiateCommand"/>
+<classEntry path="com.hydraframework.plugins.masterDetail.controller.RetrieveListCommand"/>
+<classEntry path="com.hydraframework.plugins.masterDetail.controller.SelectCommand"/>
+<classEntry path="com.hydraframework.plugins.masterDetail.controller.UpdateCommand"/>
+<classEntry path="com.hydraframework.plugins.masterDetail.data.delegates.MockMasterDelegate"/>
+<classEntry path="com.hydraframework.plugins.masterDetail.data.interfaces.IMasterDelegate"/>
+<classEntry path="com.hydraframework.plugins.masterDetail.model.MasterDetailProxy"/>
+</includeClasses>
+<includeResources/>
+<namespaceManifests/>
+</flexLibProperties>

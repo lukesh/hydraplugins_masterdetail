@@ -1,3 +1,7 @@
+/*
+   HydraFramework - Copyright (c) 2009 andCulture, Inc. Some rights reserved.
+   Your reuse is governed by the Creative Commons Attribution 3.0 United States License
+ */
 package com.hydraframework.plugins.masterDetail.data.delegates {
 	import com.hydraframework.plugins.masterDetail.data.interfaces.IMasterDelegate;
 	
@@ -63,11 +67,11 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 		public function get collection():ArrayCollection {
 			if (!mock_list) {
 				mock_list = new ArrayCollection();
-				mock_list.addItem(recordFactory());
-				mock_list.addItem(recordFactory());
-				mock_list.addItem(recordFactory());
-				mock_list.addItem(recordFactory());
-				mock_list.addItem(recordFactory());
+				mock_list.addItem(mockRecordFactory());
+				mock_list.addItem(mockRecordFactory());
+				mock_list.addItem(mockRecordFactory());
+				mock_list.addItem(mockRecordFactory());
+				mock_list.addItem(mockRecordFactory());
 			}
 			return mock_list;
 		}

@@ -3,13 +3,14 @@
    Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package com.hydraframework.plugins.masterDetail.controller {
-	import com.hydraframework.plugins.masterDetail.data.interfaces.IMasterDelegate;
-	import com.hydraframework.plugins.masterDetail.MasterDetailPlugin;
-	import com.hydraframework.plugins.masterDetail.model.MasterDetailProxy;
 	import com.hydraframework.core.mvc.events.Notification;
+	import com.hydraframework.core.mvc.events.Phase;
 	import com.hydraframework.core.mvc.interfaces.IFacade;
 	import com.hydraframework.core.mvc.patterns.command.SimpleCommand;
-
+	import com.hydraframework.plugins.masterDetail.MasterDetailPlugin;
+	import com.hydraframework.plugins.masterDetail.data.interfaces.IMasterDelegate;
+	import com.hydraframework.plugins.masterDetail.model.MasterDetailProxy;
+	
 	import mx.rpc.IResponder;
 
 	public class InstantiateCommand extends SimpleCommand implements IResponder {
@@ -32,6 +33,7 @@ package com.hydraframework.plugins.masterDetail.controller {
 		override public function execute(notification:Notification):void {
 			if (notification.isRequest()) {
 				this.proxy.selectedItem = this.delegate.recordFactory();
+				this.facade.sendNotification(new Notification(MasterDetailPlugin.INSTANTIATE, this.proxy.selectedItem, Phase.RESPONSE));
 			}
 		}
 

@@ -4,9 +4,9 @@
  */
 package com.hydraframework.plugins.masterDetail.data.delegates {
 	import com.hydraframework.plugins.masterDetail.data.interfaces.IMasterDelegate;
-	
+
 	import flash.utils.setTimeout;
-	
+
 	import mx.collections.ArrayCollection;
 	import mx.collections.IViewCursor;
 	import mx.core.mx_internal;
@@ -20,6 +20,11 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 		public function MockMasterDelegate() {
 		}
 
+		/**
+		 * Required for implementation by IDelegate, stores a reference to
+		 * the IResponder (typically a Command) that is calling an async
+		 * method.
+		 */
 		private var _responder:IResponder;
 
 		public function set responder(value:IResponder):void {
@@ -30,13 +35,25 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 			return _responder;
 		}
 
-		public function get keyField():String {
-			return "ID";
-		}
+		/*
+		   --------------------------------------------------------------------
+		   Functionality for the MockMasterDelegate to simulate data
+		   interaction in its implementation of the IMasterDelegate public API
+		   --------------------------------------------------------------------
+		 */
 
-		private function _recordFactory():Object {
-			var obj:Object = {};
-			return obj;
+		private var _mockCollection:ArrayCollection;
+
+		public function get mockCollection():ArrayCollection {
+			if (!_mockCollection) {
+				_mockCollection = new ArrayCollection();
+				_mockCollection.addItem(mockRecordFactory());
+				_mockCollection.addItem(mockRecordFactory());
+				_mockCollection.addItem(mockRecordFactory());
+				_mockCollection.addItem(mockRecordFactory());
+				_mockCollection.addItem(mockRecordFactory());
+			}
+			return _mockCollection;
 		}
 
 		private function _mockRecordFactory():Object {
@@ -46,45 +63,47 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 			return obj;
 		}
 
+		public function get mockRecordFactory():Function {
+			return _mockRecordFactory;
+		}
+
 		private function _mockIDFactory():String {
 			return String(Math.round(Math.random() * 100000))
+		}
+
+		public function get mockIDFactory():Function {
+			return _mockIDFactory;
+		}
+
+		/*
+		   --------------------------------------------------------------------
+		   Implementation of the IMasterDelegate API so that this delegate can
+		   interact with the MasterDetail plugin.
+		   --------------------------------------------------------------------
+		 */
+
+		public function get keyField():String {
+			return "ID";
+		}
+		
+		private function _recordFactory():Object {
+			var obj:Object = {};
+			return obj;
 		}
 
 		public function get recordFactory():Function {
 			return _recordFactory;
 		}
 
-		public function get mockRecordFactory():Function {
-			return _mockRecordFactory;
-		}
-		
-		public function get mockIDFactory():Function {
-			return _mockIDFactory;
-		}
-
-		private var mock_list:ArrayCollection;
-
-		public function get collection():ArrayCollection {
-			if (!mock_list) {
-				mock_list = new ArrayCollection();
-				mock_list.addItem(mockRecordFactory());
-				mock_list.addItem(mockRecordFactory());
-				mock_list.addItem(mockRecordFactory());
-				mock_list.addItem(mockRecordFactory());
-				mock_list.addItem(mockRecordFactory());
-			}
-			return mock_list;
-		}
-
 		public function retrieveList():void {
 			var asyncToken:AsyncToken = new AsyncToken(null);
-			var collection:ArrayCollection = new ArrayCollection(this.collection.toArray());
+			var collection:ArrayCollection = new ArrayCollection(this.mockCollection.toArray());
 
 			asyncToken.addResponder(new Responder(function(data:Object):void {
-										responder.result(data);
-									}, function(info:Object):void {
-										responder.fault(info);
-									}));
+					responder.result(data);
+				}, function(info:Object):void {
+					responder.fault(info);
+				}));
 
 			setTimeout(function():void {
 					asyncToken.mx_internal::applyResult(new ResultEvent(ResultEvent.RESULT, false, true, collection, asyncToken, null));
@@ -94,15 +113,15 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 		public function createObject(object:Object):void {
 			object[keyField] = mockIDFactory();
 
-			collection.addItem(object);
+			mockCollection.addItem(object);
 
 			var asyncToken:AsyncToken = new AsyncToken(null);
 
 			asyncToken.addResponder(new Responder(function(data:Object):void {
-										responder.result(data);
-									}, function(info:Object):void {
-										responder.fault(info);
-									}));
+					responder.result(data);
+				}, function(info:Object):void {
+					responder.fault(info);
+				}));
 
 			setTimeout(function():void {
 					asyncToken.mx_internal::applyResult(new ResultEvent(ResultEvent.RESULT, false, true, object, asyncToken, null));
@@ -112,7 +131,7 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 		public function retrieveObject(key:Object):void {
 			var object:Object;
 
-			var cursor:IViewCursor = collection.createCursor();
+			var cursor:IViewCursor = mockCollection.createCursor();
 			while (cursor.current) {
 				if (cursor.current[keyField] == key) {
 					object = cursor.current;
@@ -124,10 +143,10 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 			var asyncToken:AsyncToken = new AsyncToken(null);
 
 			asyncToken.addResponder(new Responder(function(data:Object):void {
-										responder.result(data);
-									}, function(info:Object):void {
-										responder.fault(info);
-									}));
+					responder.result(data);
+				}, function(info:Object):void {
+					responder.fault(info);
+				}));
 
 			setTimeout(function():void {
 					asyncToken.mx_internal::applyResult(new ResultEvent(ResultEvent.RESULT, false, true, object, asyncToken, null));
@@ -135,12 +154,12 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 		}
 
 		public function updateObject(object:Object):void {
-			var cursor:IViewCursor = collection.createCursor();
+			var cursor:IViewCursor = mockCollection.createCursor();
 			while (cursor.current) {
 				if (cursor.current[keyField] == object[keyField]) {
-					var i:int = collection.getItemIndex(cursor.current);
-					collection.removeItemAt(i);
-					collection.addItemAt(object, i);
+					var i:int = mockCollection.getItemIndex(cursor.current);
+					mockCollection.removeItemAt(i);
+					mockCollection.addItemAt(object, i);
 					break;
 				}
 				cursor.moveNext();
@@ -149,10 +168,10 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 			var asyncToken:AsyncToken = new AsyncToken(null);
 
 			asyncToken.addResponder(new Responder(function(data:Object):void {
-										responder.result(data);
-									}, function(info:Object):void {
-										responder.fault(info);
-									}));
+					responder.result(data);
+				}, function(info:Object):void {
+					responder.fault(info);
+				}));
 
 			setTimeout(function():void {
 					asyncToken.mx_internal::applyResult(new ResultEvent(ResultEvent.RESULT, false, true, object, asyncToken, null));
@@ -160,11 +179,11 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 		}
 
 		public function deleteObject(object:Object):void {
-			var cursor:IViewCursor = collection.createCursor();
+			var cursor:IViewCursor = mockCollection.createCursor();
 			while (cursor.current) {
 				if (cursor.current[keyField] == object[keyField]) {
-					var i:int = collection.getItemIndex(cursor.current);
-					collection.removeItemAt(i);
+					var i:int = mockCollection.getItemIndex(cursor.current);
+					mockCollection.removeItemAt(i);
 					break;
 				}
 				cursor.moveNext();
@@ -172,13 +191,13 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 			var asyncToken:AsyncToken = new AsyncToken(null);
 
 			asyncToken.addResponder(new Responder(function(data:Object):void {
-										responder.result(data);
-									}, function(info:Object):void {
-										responder.fault(info);
-									}));
+					responder.result(data);
+				}, function(info:Object):void {
+					responder.fault(info);
+				}));
 
 			setTimeout(function():void {
-					asyncToken.mx_internal::applyResult(new ResultEvent(ResultEvent.RESULT, false, true, { success:true }, asyncToken, null));
+					asyncToken.mx_internal::applyResult(new ResultEvent(ResultEvent.RESULT, false, true, {success: true}, asyncToken, null));
 				}, 200);
 		}
 

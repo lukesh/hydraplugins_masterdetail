@@ -8,10 +8,7 @@ package com.hydraframework.plugins.masterDetail.data.interfaces {
 
 	public interface IMasterDelegate extends IDelegate {
 		function get keyField():String;
-		function get collection():ArrayCollection;
 		function get recordFactory():Function;
-		function get mockRecordFactory():Function;
-		function get mockIDFactory():Function;
 		function retrieveList():void;
 		function createObject(object:Object):void;
 		function retrieveObject(key:Object):void;

@@ -3,14 +3,14 @@
    Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package com.hydraframework.plugins.masterDetail.controller {
-	import com.hydraframework.plugins.masterDetail.data.interfaces.IMasterDelegate;
-	import com.hydraframework.plugins.masterDetail.MasterDetailPlugin;
-	import com.hydraframework.plugins.masterDetail.model.MasterDetailProxy;
 	import com.hydraframework.core.mvc.events.Notification;
 	import com.hydraframework.core.mvc.events.Phase;
 	import com.hydraframework.core.mvc.interfaces.IFacade;
 	import com.hydraframework.core.mvc.patterns.command.SimpleCommand;
-
+	import com.hydraframework.plugins.masterDetail.MasterDetailPlugin;
+	import com.hydraframework.plugins.masterDetail.data.interfaces.IMasterDelegate;
+	import com.hydraframework.plugins.masterDetail.model.MasterDetailProxy;
+	
 	import mx.rpc.IResponder;
 	import mx.rpc.events.ResultEvent;
 
@@ -45,10 +45,13 @@ package com.hydraframework.plugins.masterDetail.controller {
 				} else {
 					this.facade.sendNotification(new Notification(MasterDetailPlugin.CREATE, data, Phase.CANCEL));
 				}
+			} else {
+				throw new Error("MasterDetail Plugin Error: CreateCommand received a result that was not a ResultEvent. Check your delegate's createObject() method to ensure that it sends a ResultEvent to responder.result().");
 			}
 		}
 
 		public function fault(data:Object):void {
+			this.facade.sendNotification(new Notification(MasterDetailPlugin.CREATE, data, Phase.CANCEL));
 		}
 	}
 }

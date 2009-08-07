@@ -45,10 +45,13 @@ package com.hydraframework.plugins.masterDetail.controller {
 				} else {
 					this.facade.sendNotification(new Notification(MasterDetailPlugin.DELETE, data, Phase.CANCEL));
 				}
+			} else {
+				throw new Error("MasterDetail Plugin Error: DeleteCommand received a result that was not a ResultEvent. Check your delegate's deleteObject() method to ensure that it sends a ResultEvent to responder.result().");
 			}
 		}
 
 		public function fault(data:Object):void {
+			this.facade.sendNotification(new Notification(MasterDetailPlugin.DELETE, data, Phase.CANCEL));
 		}
 	}
 }

@@ -16,8 +16,8 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 	import mx.rpc.events.ResultEvent;
 	use namespace mx_internal;
 
-	public class MockMasterDelegate implements IMasterDelegate {
-		public function MockMasterDelegate() {
+	public class MasterDelegateMock implements IMasterDelegate {
+		public function MasterDelegateMock() {
 		}
 
 		/**

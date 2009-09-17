@@ -5,7 +5,7 @@
 package com.hydraframework.plugins.masterDetail {
 	import com.hydraframework.plugins.masterDetail.data.interfaces.IMasterDelegate;
 	import com.hydraframework.plugins.masterDetail.controller.*;
-	import com.hydraframework.plugins.masterDetail.data.delegates.MockMasterDelegate;
+	import com.hydraframework.plugins.masterDetail.data.delegates.MasterDelegateMock;
 	import com.hydraframework.plugins.masterDetail.model.MasterDetailProxy;
 	import com.hydraframework.core.mvc.patterns.plugin.Plugin;
 
@@ -45,7 +45,7 @@ package com.hydraframework.plugins.masterDetail {
 		/**
 		 * Default Master delegate
 		 */
-		private var _masterDelegate:Class = MockMasterDelegate;
+		private var _masterDelegate:Class = MasterDelegateMock;
 
 		public function set masterDelegate(value:Class):void {
 			if (value != _masterDelegate) {

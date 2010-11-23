@@ -17,6 +17,7 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 	use namespace mx_internal;
 
 	public class MasterDelegateMock implements IMasterDelegate {
+		
 		public function MasterDelegateMock() {
 		}
 
@@ -25,13 +26,13 @@ package com.hydraframework.plugins.masterDetail.data.delegates {
 		 * the IResponder (typically a Command) that is calling an async
 		 * method.
 		 */
-		private var _responder:IResponder;
+		private var _responder:*;
 
-		public function set responder(value:IResponder):void {
+		public function set responder(value:*):void {
 			_responder = value;
 		}
 
-		public function get responder():IResponder {
+		public function get responder():*{
 			return _responder;
 		}
 

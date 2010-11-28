@@ -3,6 +3,7 @@
    Your reuse is governed by the MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 package com.hydraframework.plugins.masterDetail.controller {
+
 	import com.hydraframework.core.mvc.events.Notification;
 	import com.hydraframework.core.mvc.events.Phase;
 	import com.hydraframework.core.mvc.interfaces.IFacade;
@@ -10,14 +11,14 @@ package com.hydraframework.plugins.masterDetail.controller {
 	import com.hydraframework.plugins.masterDetail.MasterDetailPlugin;
 	import com.hydraframework.plugins.masterDetail.data.interfaces.IMasterDelegate;
 	import com.hydraframework.plugins.masterDetail.model.MasterDetailProxy;
-	
+
 	import mx.rpc.IResponder;
 	import mx.rpc.events.ResultEvent;
 
 	public class UpdateCommand extends SimpleCommand implements IResponder {
 		public function get delegate():IMasterDelegate {
 			var plugin:MasterDetailPlugin = MasterDetailPlugin(this.facade.retrievePlugin(MasterDetailPlugin.NAME));
-			var retval:IMasterDelegate = this.facade.retrieveDelegate(plugin.masterDelegateInterface) as IMasterDelegate;
+			var retval:IMasterDelegate    = this.facade.retrieveDelegate(plugin.masterDelegateInterface) as IMasterDelegate;
 			retval.responder = this;
 			return retval;
 		}
@@ -38,7 +39,7 @@ package com.hydraframework.plugins.masterDetail.controller {
 
 		public function result(data:Object):void {
 			if (data is ResultEvent) {
-				this.facade.sendNotification(new Notification(MasterDetailPlugin.UPDATE, data, Phase.RESPONSE));
+				this.facade.sendNotification(new Notification(MasterDetailPlugin.UPDATE, ResultEvent(data).result, Phase.RESPONSE));
 				this.facade.sendNotification(new Notification(MasterDetailPlugin.RETRIEVE_LIST));
 			} else {
 				throw new Error("MasterDetail Plugin Error: UpdateCommand received a result that was not a ResultEvent. Check your delegate's updateObject() method to ensure that it sends a ResultEvent to responder.result().");
